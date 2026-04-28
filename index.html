@@ -299,7 +299,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
     import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
-    import { getAuth, GoogleAuthProvider, signInWithRedirect, signOut, onAuthStateChanged, getRedirectResult } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, getRedirectResult } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyA3q30D3qRVqmDIVtsuQhub_VrawsrdUMk",
@@ -341,11 +341,11 @@
 
     // ログイン
     loginBtn.addEventListener('click', () => {
-      signInWithRedirect(auth, provider);
-    });
-    // リダイレクト後の結果を受け取る
-    getRedirectResult(auth).catch((err) => {
-      console.error('ログインエラー:', err);
+      signInWithPopup(auth, provider).catch((err) => {
+        if (err.code !== 'auth/popup-closed-by-user') {
+          console.error('ログインエラー:', err);
+        }
+      });
     });
 
     // サインアウト
