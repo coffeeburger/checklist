@@ -355,7 +355,7 @@
 
     // チェックリストの初期化（認証後に一度だけ呼ぶ）
     let initialized = false;
-    async function initChecklist() {
+    async function initChecklist(user) {
       if (initialized) return;
       initialized = true;
 
