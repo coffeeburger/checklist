@@ -331,7 +331,7 @@
       if (user && user.uid === ALLOWED_UID) {
         loginScreen.style.display = 'none';
         checklistWrap.style.display = 'block';
-        initChecklist();
+        initChecklist(user); // userを渡す
       } else {
         if (user) signOut(auth); // UID不一致なら即サインアウト
         loginScreen.style.display = 'flex';
@@ -355,9 +355,11 @@
 
     // チェックリストの初期化（認証後に一度だけ呼ぶ）
     let initialized = false;
-    function initChecklist() {
+    async function initChecklist() {
       if (initialized) return;
       initialized = true;
+
+      await user.getIdToken(); // トークン取得を待つ
 
       rows.forEach((row, index) => {
         const checkbox = row.querySelector('input[type="checkbox"]');
