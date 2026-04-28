@@ -323,13 +323,17 @@
     const rows = document.querySelectorAll('table tr:not(:first-child)');
     const indicator = document.getElementById('indicator');
     const total = rows.length;
+
     // 認証状態の監視
+    const ALLOWED_UID = '9HlKElzUjeROIdXcsGkgobwkqyz1';
+
     onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && user.uid === ALLOWED_UID) {
         loginScreen.style.display = 'none';
         checklistWrap.style.display = 'block';
         initChecklist();
       } else {
+        if (user) signOut(auth); // UID不一致なら即サインアウト
         loginScreen.style.display = 'flex';
         checklistWrap.style.display = 'none';
       }
