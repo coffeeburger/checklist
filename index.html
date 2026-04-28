@@ -72,158 +72,234 @@
       border-radius: 20px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
+
+    /* ログイン画面 */
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 16px;
+    }
+
+    #login-screen h1 {
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    #login-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      color: #3c4043;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    #login-btn:hover {
+      background: #f8f9fa;
+    }
+
+    #login-btn img {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* サインアウトボタン */
+    #signout-btn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 5px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 12px;
+      color: #555;
+    }
+
+    #signout-btn:hover {
+      background: #f0f0f0;
+    }
+
+    /* チェックリスト初期非表示 */
+    #checklist-wrap {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
 
-  <div id="indicator"></div>
+  <!-- ログイン画面 -->
+  <div id="login-screen">
+    <h1>事前提出書類チェックリスト</h1>
+    <button id="login-btn">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+      Googleでサインイン
+    </button>
+  </div>
 
-  <table>
-    <colgroup>
-      <col style="width: 75%">
-      <col style="width: 15%">
-      <col style="width: 10%">
-    </colgroup>
-    <tr>
-      <th>提出書類　【項目をクリックすると、HPリンク先へ移動します】</th>
-      <th>提出方法</th>
-      <th>チェック</th>
-    </tr>
+  <!-- チェックリスト本体 -->
+  <div id="checklist-wrap">
+    <div id="indicator"></div>
+    <button id="signout-btn">サインアウト</button>
 
-    <tr>
-      <td>
-        <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-5.html" target="_blank">参加形態申告書</a>
-        <span>（現職参加者は「別紙：現職参加にかかる届出」もご提出ください）</span>
-      </td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+    <table>
+      <colgroup>
+        <col style="width: 75%">
+        <col style="width: 15%">
+        <col style="width: 10%">
+      </colgroup>
+      <tr>
+        <th>提出書類　【項目をクリックすると、HPリンク先へ移動します】</th>
+        <th>提出方法</th>
+        <th>チェック</th>
+      </tr>
 
-    <tr>
-      <td><a href="https://www.jica.go.jp/volunteer/qualifier/long/3-2.html" target="_blank">履歴書記入用紙／外国語履歴書用写真</a></td>
-      <td style="overflow-wrap: break-word">バークレーハウス語学センター指定のフォルダへアップロード</td>
-      <td><input type="checkbox"></td>
-    </tr>
+      <tr>
+        <td>
+          <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-5.html" target="_blank">参加形態申告書</a>
+          <span>（現職参加者は「別紙：現職参加にかかる届出」もご提出ください）</span>
+        </td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td>
-        <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-7.html" target="_blank">健康診断書／立替払い請求書／領収書貼付用紙</a>
-        <div class="notice">※2026年4月21日(火)以降に受診したもの</div>
-      </td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+      <tr>
+        <td><a href="https://www.jica.go.jp/volunteer/qualifier/long/3-2.html" target="_blank">履歴書記入用紙／外国語履歴書用写真</a>
+        </td>
+        <td style="overflow-wrap: break-word">バークレーハウス語学センター指定のフォルダへアップロード</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td><a href="https://www.jica.go.jp/volunteer/qualifier/long/2-3.html" target="_blank">予防接種同意書</a></td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+      <tr>
+        <td>
+          <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-7.html" target="_blank">健康診断書／立替払い請求書／領収書貼付用紙</a>
+          <div class="notice">※2026年4月21日(火)以降に受診したもの</div>
+        </td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td>
-        <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-10.html" target="_blank">予防接種及び健康に関する問診票</a>
-        <span class="ryomen">※両面印刷</span>
-      </td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+      <tr>
+        <td><a href="https://www.jica.go.jp/volunteer/qualifier/long/2-3.html" target="_blank">予防接種同意書</a></td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td>
-        <div class="cell-with-schedule">
-          <div>
-            <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-5.html" target="_blank">退職証明書</a>
-            <span class="notice">※裏面左上に氏名・派遣国・職種を鉛筆で記入</span><br>
-            ※提出日に間に合わない場合は送付予定日を記入してください。
+      <tr>
+        <td>
+          <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-10.html" target="_blank">予防接種及び健康に関する問診票</a>
+          <span class="ryomen">※両面印刷</span>
+        </td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="cell-with-schedule">
+            <div>
+              <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-5.html" target="_blank">退職証明書</a>
+              <span class="notice">※裏面左上に氏名・派遣国・職種を鉛筆で記入</span><br>
+              ※提出日に間に合わない場合は送付予定日を記入してください。
+            </div>
+            <div>（　　月　　日　送付予定　）</div>
           </div>
-          <div>（　　月　　日　送付予定　）</div>
-        </div>
-      </td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+        </td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td>
-        <div class="cell-with-schedule">
-          <div>
-            <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-5.html" target="_blank">無給証明書</a>
-            <span class="notice">※裏面左上に氏名・派遣国・職種を鉛筆で記入</span><br>
-            ※提出日に間に合わない場合は送付予定日を記入してください。
+      <tr>
+        <td>
+          <div class="cell-with-schedule">
+            <div>
+              <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-5.html" target="_blank">無給証明書</a>
+              <span class="notice">※裏面左上に氏名・派遣国・職種を鉛筆で記入</span><br>
+              ※提出日に間に合わない場合は送付予定日を記入してください。
+            </div>
+            <div>（　　月　　日　送付予定　）</div>
           </div>
-          <div>（　　月　　日　送付予定　）</div>
-        </div>
-      </td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+        </td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td>
-        <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-1.html" target="_blank">戸籍謄本</a>
-        【_____通】 ※裏面左上に氏名・派遣国・職種を鉛筆で記入<br>
-        <span class="notice">※2026年6月4日(木)以降に発行のもの</span>（原本のみ・コピー不可）。セネガル派遣の方は2通必要です。
-      </td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+      <tr>
+        <td>
+          <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-1.html" target="_blank">戸籍謄本</a>
+          【_____通】 ※裏面左上に氏名・派遣国・職種を鉛筆で記入<br>
+          <span class="notice">※2026年6月4日(木)以降に発行のもの</span>（原本のみ・コピー不可）。セネガル派遣の方は2通必要です。
+        </td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td>
-        <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-1.html"
-          target="_blank">一般旅券（パスポート）A4コピー、旅券（パスポート）情報確認書</a>
-        <div>
-          <span class="notice">※裏面左上に氏名・派遣国・職種を鉛筆で記入</span>
-          <ul>
-            <li>有効期限内の一般旅券をお持ちの方：一般旅券のコピー</li>
-            <li>有効期限内の一般旅券をお持ちでない方：旅券（パスポート）情報確認書</li>
-            <li>有効期限内の一般旅券をお持ちで、記載事項が最新ではない方：一般旅券のコピーと旅券（パスポート）情報確認書</li>
-          </ul>
-        </div>
-      </td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+      <tr>
+        <td>
+          <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-1.html"
+            target="_blank">一般旅券（パスポート）A4コピー、旅券（パスポート）情報確認書</a>
+          <div>
+            <span class="notice">※裏面左上に氏名・派遣国・職種を鉛筆で記入</span>
+            <ul>
+              <li>有効期限内の一般旅券をお持ちの方：一般旅券のコピー</li>
+              <li>有効期限内の一般旅券をお持ちでない方：旅券（パスポート）情報確認書</li>
+              <li>有効期限内の一般旅券をお持ちで、記載事項が最新ではない方：一般旅券のコピーと旅券（パスポート）情報確認書</li>
+            </ul>
+          </div>
+        </td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td><a href="https://www.jica.go.jp/volunteer/qualifier/long/3-1.html" target="_blank">公用旅券用サイン記入用紙</a></td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+      <tr>
+        <td><a href="https://www.jica.go.jp/volunteer/qualifier/long/3-1.html" target="_blank">公用旅券用サイン記入用紙</a></td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td>
-        <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-6.html" target="_blank">赴任時旅費算出データ</a>
-        <span class="ryomen">※両面印刷</span>
-      </td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+      <tr>
+        <td>
+          <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-6.html" target="_blank">赴任時旅費算出データ</a>
+          <span class="ryomen">※両面印刷</span>
+        </td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td>
-        <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-6.html" target="_blank">訓練入退所時旅費算出データ</a>
-        <span class="ryomen">※両面印刷</span>
-      </td>
-      <td>郵送</td>
-      <td><input type="checkbox"></td>
-    </tr>
+      <tr>
+        <td>
+          <a href="https://www.jica.go.jp/volunteer/qualifier/long/3-6.html" target="_blank">訓練入退所時旅費算出データ</a>
+          <span class="ryomen">※両面印刷</span>
+        </td>
+        <td>郵送</td>
+        <td><input type="checkbox"></td>
+      </tr>
 
-    <tr>
-      <td><a
-          href="https://forms.office.com/pages/responsepage.aspx?id=Qvyp64hVMU2KTm4b950xwI7B0latKG1CtjVBkdECw6pUQlBKQlBVNzQyN1haM0RaT1ZBQUgxSTNDTSQlQCN0PWcu&route=shorturl"
-          target="_blank">訓練言語既習度調査票</a></td>
-      <td><a
-          href="https://forms.office.com/pages/responsepage.aspx?id=Qvyp64hVMU2KTm4b950xwI7B0latKG1CtjVBkdECw6pUQlBKQlBVNzQyN1haM0RaT1ZBQUgxSTNDTSQlQCN0PWcu&route=shorturl"
-          target="_blank">ウェブ</a></td>
-      <td><input type="checkbox"></td>
-    </tr>
-  </table>
+      <tr>
+        <td><a
+            href="https://forms.office.com/pages/responsepage.aspx?id=Qvyp64hVMU2KTm4b950xwI7B0latKG1CtjVBkdECw6pUQlBKQlBVNzQyN1haM0RaT1ZBQUgxSTNDTSQlQCN0PWcu&route=shorturl"
+            target="_blank">訓練言語既習度調査票</a></td>
+        <td><a
+            href="https://forms.office.com/pages/responsepage.aspx?id=Qvyp64hVMU2KTm4b950xwI7B0latKG1CtjVBkdECw6pUQlBKQlBVNzQyN1haM0RaT1ZBQUgxSTNDTSQlQCN0PWcu&route=shorturl"
+            target="_blank">ウェブ</a></td>
+        <td><input type="checkbox"></td>
+      </tr>
+    </table>
+  </div>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
     import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyA3q30D3qRVqmDIVtsuQhub_VrawsrdUMk",
@@ -237,26 +313,60 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
+    const loginScreen = document.getElementById('login-screen');
+    const checklistWrap = document.getElementById('checklist-wrap');
+    const loginBtn = document.getElementById('login-btn');
+    const signoutBtn = document.getElementById('signout-btn');
     const rows = document.querySelectorAll('table tr:not(:first-child)');
     const indicator = document.getElementById('indicator');
     const total = rows.length;
+    // 認証状態の監視
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginScreen.style.display = 'none';
+        checklistWrap.style.display = 'block';
+        initChecklist();
+      } else {
+        loginScreen.style.display = 'flex';
+        checklistWrap.style.display = 'none';
+      }
+    });
 
-    rows.forEach((row, index) => {
-      const checkbox = row.querySelector('input[type="checkbox"]');
-      const itemRef = ref(db, 'checklist/' + index);
-
-      // Firebaseから状態を読み込む
-      onValue(itemRef, (snapshot) => {
-        checkbox.checked = snapshot.val() === true;
-        updateIndicator();
-      });
-
-      // チェック変更時にFirebaseへ保存
-      checkbox.addEventListener('change', () => {
-        set(itemRef, checkbox.checked);
+    // ログイン
+    loginBtn.addEventListener('click', () => {
+      signInWithPopup(auth, provider).catch((err) => {
+        console.error('ログインエラー:', err);
       });
     });
+
+    // サインアウト
+    signoutBtn.addEventListener('click', () => {
+      signOut(auth);
+    });
+
+    // チェックリストの初期化（認証後に一度だけ呼ぶ）
+    let initialized = false;
+    function initChecklist() {
+      if (initialized) return;
+      initialized = true;
+
+      rows.forEach((row, index) => {
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        const itemRef = ref(db, 'checklist/' + index);
+
+        onValue(itemRef, (snapshot) => {
+          checkbox.checked = snapshot.val() === true;
+          updateIndicator();
+        });
+
+        checkbox.addEventListener('change', () => {
+          set(itemRef, checkbox.checked);
+        });
+      });
+    }
 
     function updateIndicator() {
       const done = [...rows].filter(row =>
