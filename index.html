@@ -401,7 +401,6 @@
         const [oldSnap, newSnap] = await Promise.all([get(oldRef), get(newRef)]);
         if (typeof oldSnap.val() === 'boolean' && newSnap.val() === null) {
           await set(newRef, oldSnap.val());
-          await set(oldRef, null);
         }
       }));
 
