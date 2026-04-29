@@ -10,7 +10,7 @@
       border-collapse: collapse;
       table-layout: fixed;
       border: 1px solid black;
-      width: 1100px;
+      width: 1300px;
     }
 
     tr:has(th) {
@@ -58,9 +58,26 @@
       border-left: 0.5px solid black;
     }
 
-    td:has(input) {
+    td:has(input[type="checkbox"]) {
       text-align: center;
       vertical-align: middle;
+    }
+
+    .memo-cell {
+      vertical-align: top;
+    }
+
+    .memo-cell textarea {
+      width: 100%;
+      min-height: 60px;
+      resize: vertical;
+      border: none;
+      outline: none;
+      font-size: 13px;
+      font-family: inherit;
+      background: transparent;
+      padding: 2px;
+      box-sizing: border-box;
     }
 
     #indicator {
@@ -154,14 +171,16 @@
 
     <table>
       <colgroup>
-        <col style="width: 75%">
-        <col style="width: 15%">
-        <col style="width: 10%">
+        <col style="width: 55%">
+        <col style="width: 12%">
+        <col style="width: 8%">
+        <col style="width: 25%">
       </colgroup>
       <tr>
         <th>提出書類　【項目をクリックすると、HPリンク先へ移動します】</th>
         <th>提出方法</th>
         <th>チェック</th>
+        <th>メモ</th>
       </tr>
 
       <tr>
@@ -171,6 +190,7 @@
         </td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -178,6 +198,7 @@
         </td>
         <td style="overflow-wrap: break-word">バークレーハウス語学センター指定のフォルダへアップロード</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -187,12 +208,14 @@
         </td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
         <td><a href="https://www.jica.go.jp/volunteer/qualifier/long/2-3.html" target="_blank">予防接種同意書</a></td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -202,6 +225,7 @@
         </td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -217,6 +241,7 @@
         </td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -232,6 +257,7 @@
         </td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -242,6 +268,7 @@
         </td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -259,12 +286,14 @@
         </td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
         <td><a href="https://www.jica.go.jp/volunteer/qualifier/long/3-1.html" target="_blank">公用旅券用サイン記入用紙</a></td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -274,6 +303,7 @@
         </td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -283,6 +313,7 @@
         </td>
         <td>郵送</td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
 
       <tr>
@@ -293,6 +324,7 @@
             href="https://forms.office.com/pages/responsepage.aspx?id=Qvyp64hVMU2KTm4b950xwI7B0latKG1CtjVBkdECw6pUQlBKQlBVNzQyN1haM0RaT1ZBQUgxSTNDTSQlQCN0PWcu&route=shorturl"
             target="_blank">ウェブ</a></td>
         <td><input type="checkbox"></td>
+        <td class="memo-cell"><textarea placeholder="メモ..."></textarea></td>
       </tr>
     </table>
   </div>
@@ -363,15 +395,32 @@
 
       rows.forEach((row, index) => {
         const checkbox = row.querySelector('input[type="checkbox"]');
-        const itemRef = ref(db, 'checklist/' + index);
+        const textarea = row.querySelector('textarea');
+        const checkRef = ref(db, 'checklist/' + index + '/checked');
+        const memoRef = ref(db, 'checklist/' + index + '/memo');
 
-        onValue(itemRef, (snapshot) => {
+        onValue(checkRef, (snapshot) => {
           checkbox.checked = snapshot.val() === true;
           updateIndicator();
         });
 
         checkbox.addEventListener('change', () => {
-          set(itemRef, checkbox.checked);
+          set(checkRef, checkbox.checked);
+        });
+
+        onValue(memoRef, (snapshot) => {
+          const val = snapshot.val();
+          if (val !== null && textarea.value !== val) {
+            textarea.value = val;
+          }
+        });
+
+        let memoTimer = null;
+        textarea.addEventListener('input', () => {
+          clearTimeout(memoTimer);
+          memoTimer = setTimeout(() => {
+            set(memoRef, textarea.value);
+          }, 500);
         });
       });
     }
